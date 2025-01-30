@@ -1,4 +1,4 @@
-package me.legrange.mikrotik.impl;
+package me.legrange.mikrotik.impl.exceptions;
 
 import me.legrange.mikrotik.MikrotikApiException;
 
@@ -8,11 +8,11 @@ import me.legrange.mikrotik.MikrotikApiException;
  */
 public class ApiDataException extends MikrotikApiException {
 
-    ApiDataException(String msg) {
+    public ApiDataException(String msg) {
         super(msg);
     }
 
-    ApiDataException(String msg, Throwable err) {
+    public ApiDataException(String msg, Throwable err) {
         super(msg, err);
     }
 

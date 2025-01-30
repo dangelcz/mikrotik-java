@@ -3,6 +3,12 @@ package me.legrange.mikrotik.impl;
 import me.legrange.mikrotik.ApiConnectionException;
 import me.legrange.mikrotik.MikrotikApiException;
 import me.legrange.mikrotik.ResultListener;
+import me.legrange.mikrotik.impl.exceptions.ApiCommandException;
+import me.legrange.mikrotik.impl.exceptions.ApiDataException;
+import me.legrange.mikrotik.impl.responses.ApiResponse;
+import me.legrange.mikrotik.impl.responses.DoneResponse;
+import me.legrange.mikrotik.impl.responses.ErrorResponse;
+import me.legrange.mikrotik.impl.responses.ResultResponse;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -11,11 +17,11 @@ import java.util.List;
 /**
  * Thread to take the received strings and process it into Result objects
  */
-class Processor extends Thread {
+class ConnectionProcessor extends Thread {
 
     private final ApiConnectionImpl apiConnection;
 
-    Processor(ApiConnectionImpl apiConnection) {
+    ConnectionProcessor(ApiConnectionImpl apiConnection) {
         super("Mikrotik API Result Processor");
         this.apiConnection = apiConnection;
     }
@@ -23,13 +29,13 @@ class Processor extends Thread {
     @Override
     public void run() {
         while (apiConnection.isConnected()) {
-            Response res;
+            ApiResponse res;
             try {
                 res = unpack();
             } catch (ApiCommandException ex) {
                 String tag = ex.getTag();
                 if (tag != null) {
-                    res = new Error(tag, ex.getMessage(), ex.getCategory());
+                    res = new ErrorResponse(tag, ex.getMessage(), ex.getCategory());
                 } else {
                     continue;
                 }
@@ -39,17 +45,17 @@ class Processor extends Thread {
             if (res.getTag() != null) {
                 ResultListener l = apiConnection.getListener(res.getTag());
                 if (l != null) {
-                    if (res instanceof Result) {
-                        l.receive((Result) res);
-                    } else if (res instanceof Done) {
+                    if (res instanceof ResultResponse) {
+                        l.receive((ResultResponse) res);
+                    } else if (res instanceof DoneResponse) {
                         if (l instanceof SyncListener) {
-                            ((SyncListener) l).completed((Done) res);
+                            ((SyncListener) l).completed((DoneResponse) res);
                         } else {
                             l.completed();
                         }
                         apiConnection.removeListener(res.getTag());
-                    } else if (res instanceof Error) {
-                        l.error(new ApiCommandException((Error) res));
+                    } else if (res instanceof ErrorResponse) {
+                        l.error(new ApiCommandException((ErrorResponse) res));
                     }
                 }
             } else {
@@ -58,7 +64,8 @@ class Processor extends Thread {
         }
     }
 
-    private void nextLine() throws ApiConnectionException, ApiDataException {
+    private void nextLine() throws ApiConnectionException, ApiDataException
+    {
         if (lines.isEmpty()) {
             String block = apiConnection.getReader().take();
             String[] parts = block.split("\n");
@@ -80,7 +87,7 @@ class Processor extends Thread {
         return lines.get(0);
     }
 
-    private Response unpack() throws MikrotikApiException {
+    private ApiResponse unpack() throws MikrotikApiException {
         if (line == null) {
             nextLine();
         }
@@ -98,9 +105,9 @@ class Processor extends Thread {
         }
     }
 
-    private Result unpackRe() throws ApiDataException, ApiConnectionException {
+    private ResultResponse unpackRe() throws ApiDataException, ApiConnectionException {
         nextLine();
-        Result res = new Result();
+        ResultResponse res = new ResultResponse();
         while (!line.startsWith(("!"))) {
             if (line.startsWith(("="))) {
                 String[] parts = line.split("=", 3);
@@ -154,8 +161,8 @@ class Processor extends Thread {
         return buf.toString();
     }
 
-    private Done unpackDone() throws MikrotikApiException {
-        Done done = new Done(null);
+    private DoneResponse unpackDone() throws MikrotikApiException {
+        DoneResponse done = new DoneResponse(null);
         if (hasNextLine()) {
             nextLine();
 
@@ -184,9 +191,9 @@ class Processor extends Thread {
         return done;
     }
 
-    private Error unpackError() throws MikrotikApiException {
+    private ErrorResponse unpackError() throws MikrotikApiException {
         nextLine();
-        Error err = new Error();
+        ErrorResponse err = new ErrorResponse();
         if (hasNextLine()) {
             while (!line.startsWith("!")) {
                 if (line.startsWith(".tag=")) {

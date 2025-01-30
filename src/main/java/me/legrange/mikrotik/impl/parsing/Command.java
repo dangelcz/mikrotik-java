@@ -1,4 +1,4 @@
-package me.legrange.mikrotik.impl;
+package me.legrange.mikrotik.impl.parsing;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -10,14 +10,14 @@ import java.util.List;
  *
  * @author GideonLeGrange
  */
-class Command {
+public class Command {
 
     @Override
     public String toString() {
         return String.format("cmd[%s] = %s, params = %s, queries = %s, props=%s ", tag, cmd, params, queries, properties);
     }
 
-    Command(String cmd) {
+    public Command(String cmd) {
         if (!cmd.startsWith("/")) {
             cmd = "/" + cmd;
         }
@@ -31,7 +31,7 @@ class Command {
     /**
      * Add a parameter to a command.
      */
-    void addParameter(String name, String value) {
+    public void addParameter(String name, String value) {
         params.add(new Parameter(name, value));
     }
 
@@ -53,7 +53,7 @@ class Command {
         this.queries.addAll(Arrays.asList(queries));
     }
 
-    void setTag(String tag) {
+    public void setTag(String tag) {
         this.tag = tag;
     }
 

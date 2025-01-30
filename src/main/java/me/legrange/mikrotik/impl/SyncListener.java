@@ -3,6 +3,8 @@ package me.legrange.mikrotik.impl;
 import me.legrange.mikrotik.ApiConnectionException;
 import me.legrange.mikrotik.MikrotikApiException;
 import me.legrange.mikrotik.ResultListener;
+import me.legrange.mikrotik.impl.responses.DoneResponse;
+import me.legrange.mikrotik.impl.responses.ResultResponse;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -22,9 +24,9 @@ class SyncListener implements ResultListener {
         notifyAll();
     }
 
-    synchronized void completed(Done done) {
+    synchronized void completed(DoneResponse done) {
         if (done.getHash() != null) {
-            Result res = new Result();
+            ResultResponse res = new ResultResponse();
             res.put("ret", done.getHash());
             results.add(res);
         }

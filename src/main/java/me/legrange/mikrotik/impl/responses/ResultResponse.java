@@ -1,4 +1,4 @@
-    package me.legrange.mikrotik.impl;
+    package me.legrange.mikrotik.impl.responses;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,7 +9,7 @@ import java.util.Set;
  * A result from an API command. 
  * @author GideonLeGrange
  */
-class Result extends Response implements Map<String, String> {
+public class ResultResponse extends ApiResponse implements Map<String, String> {
 
     public String get(String key) {
         return map.get(key);
@@ -80,7 +80,7 @@ class Result extends Response implements Map<String, String> {
         return map.entrySet();
     }
 
-    Result() {
+    public ResultResponse() {
         super(null);
         this.map = new HashMap<>();
     }

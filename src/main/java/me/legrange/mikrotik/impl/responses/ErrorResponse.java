@@ -1,37 +1,38 @@
-package me.legrange.mikrotik.impl;
+package me.legrange.mikrotik.impl.responses;
 
 /**
  * Used to encapsulate API error information. We need to pass both the message and the tag (if one was used).
  *
  * @author GideonLeGrange
  */
-class Error extends Response {
+public class ErrorResponse extends ApiResponse
+{
 
     private String message;
     private int category;
 
-    Error(String tag, String message, int category) {
+    public ErrorResponse(String tag, String message, int category) {
         super(tag);
         this.message = message;
     }
 
-    Error() {
+    public ErrorResponse() {
         super(null);
     }
 
-    String getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    void setMessage(String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
-    int getCategory() {
+    public int getCategory() {
         return category;
     }
 
-    void setCategory(int category) {
+    public void setCategory(int category) {
         this.category = category;
     }
 }

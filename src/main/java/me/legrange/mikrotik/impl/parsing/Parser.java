@@ -1,22 +1,24 @@
-package me.legrange.mikrotik.impl;
+package me.legrange.mikrotik.impl.parsing;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import me.legrange.mikrotik.impl.Scanner.Token;
+import me.legrange.mikrotik.impl.exceptions.ParseException;
+import me.legrange.mikrotik.impl.parsing.Scanner.Token;
+import me.legrange.mikrotik.impl.exceptions.ScanException;
 
 /**
  * Parse the pseudo-command line into command objects.
  *
  * @author GideonLeGrange
  */
-class Parser {
+public class Parser {
 
     /**
      * parse the given bit of text into a Command object
      */
-    static Command parse(String text) throws ParseException {
+    public static Command parse(String text) throws ParseException {
         Parser parser = new Parser(text);
         return parser.parse();
     }
@@ -160,7 +162,8 @@ class Parser {
         next();
     }
 
-    private void lessExpr(String name) throws ScanException {
+    private void lessExpr(String name) throws ScanException
+    {
         next(); // eat < 
         cmd.addQuery(String.format("?<%s=%s", name, text));
         next();
@@ -197,14 +200,18 @@ class Parser {
     }
 
     private void expect(Token... tokens) throws ParseException {
-        if (!is(tokens))
+        if (!is(tokens)) {
             throw new ParseException(String.format("Expected %s but found %s at position %d", Arrays.asList(tokens), this.token, scanner.pos()));
+        }
     }
 
     private boolean is(Token... tokens) {
         for (Token want : tokens) {
-            if (this.token == want) return true;
+            if (this.token == want) {
+                return true;
+            }
         }
+
         return false;
     }
 
@@ -216,6 +223,7 @@ class Parser {
         while (token == Token.WS) {
             token = scanner.next();
         }
+
         text = scanner.text();
     }
 

@@ -1,6 +1,7 @@
-package me.legrange.mikrotik.impl;
+package me.legrange.mikrotik.impl.exceptions;
 
 import me.legrange.mikrotik.MikrotikApiException;
+import me.legrange.mikrotik.impl.responses.ErrorResponse;
 
 /**
  * Thrown when the Mikrotik returns an error when receiving our command.
@@ -33,7 +34,7 @@ public class ApiCommandException extends MikrotikApiException {
         return category;
     }
 
-    ApiCommandException(Error err) {
+    public ApiCommandException(ErrorResponse err) {
         super(err.getMessage());
         tag = err.getTag();
         category = err.getCategory();

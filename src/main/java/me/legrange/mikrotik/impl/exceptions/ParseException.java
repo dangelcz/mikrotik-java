@@ -1,4 +1,4 @@
-package me.legrange.mikrotik.impl;
+package me.legrange.mikrotik.impl.exceptions;
 
 import me.legrange.mikrotik.MikrotikApiException;
 
@@ -8,7 +8,7 @@ import me.legrange.mikrotik.MikrotikApiException;
  */
 public class ParseException extends MikrotikApiException {
 
-    ParseException(String msg) {
+    public ParseException(String msg) {
         super(msg);
     }
 

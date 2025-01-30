@@ -1,11 +1,11 @@
-package me.legrange.mikrotik.impl;
+package me.legrange.mikrotik.impl.responses;
 
 /**
  * Super type of possible API responses
  *
  * @author GideonLeGrange
  */
-abstract class Response {
+public abstract class ApiResponse {
 
     public String getTag() {
         return tag;
@@ -16,11 +16,11 @@ abstract class Response {
         return String.format("%s: tag=%s", getClass().getSimpleName(), tag);
     }
     
-    void setTag(String tag) { 
+    public void setTag(String tag) {
         this.tag = tag;
     }
     
-    protected Response(String tag) {
+    protected ApiResponse(String tag) {
         this.tag = tag;
     }
     

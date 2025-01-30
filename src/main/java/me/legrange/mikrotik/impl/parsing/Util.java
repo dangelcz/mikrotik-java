@@ -1,4 +1,4 @@
-package me.legrange.mikrotik.impl;
+package me.legrange.mikrotik.impl.parsing;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +9,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import me.legrange.mikrotik.ApiConnectionException;
+import me.legrange.mikrotik.impl.exceptions.ApiDataException;
 
 /**
  * Utility library that handles the low level encoding required by the Mikrotik
@@ -16,12 +17,12 @@ import me.legrange.mikrotik.ApiConnectionException;
  *
  * @author GideonLeGrange. Possibly some code by janisk left.
  */
-final class Util {
+public final class Util {
 
     /**
      * write a command to the output stream
      */
-    static void write(Command cmd, OutputStream out) throws UnsupportedEncodingException, IOException {
+    public static void write(Command cmd, OutputStream out) throws UnsupportedEncodingException, IOException {
         encode(cmd.getCommand(), out);
         for (Parameter param : cmd.getParameters()) {
             encode(String.format("=%s=%s", param.getName(), param.hasValue() ? param.getValue() : ""), out);
@@ -51,7 +52,7 @@ final class Util {
      * decode bytes from an input stream of Mikrotik protocol sentences into
      * text
      */
-    static String decode(InputStream in) throws ApiDataException, ApiConnectionException {
+    public static String decode(InputStream in) throws ApiDataException, ApiConnectionException {
         StringBuilder res = new StringBuilder();
         decode(in, res);
         return res.toString();
@@ -90,7 +91,7 @@ final class Util {
      * @param s - variable to make hash from
      * @return - the md5 hash
      */
-    static String hashMD5(String s) throws ApiDataException {
+    public static String hashMD5(String s) throws ApiDataException {
         MessageDigest algorithm = null;
         try {
             algorithm = MessageDigest.getInstance("MD5");
@@ -121,7 +122,7 @@ final class Util {
      * @param s - hex string to convert to
      * @return - converted string.
      */
-    static String hexStrToStr(String s) {
+    public static String hexStrToStr(String s) {
         StringBuilder ret = new StringBuilder();
         for (int i = 0; i < s.length(); i += 2) {
             ret.append((char) Integer.parseInt(s.substring(i, i + 2), 16));

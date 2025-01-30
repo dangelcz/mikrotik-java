@@ -1,11 +1,11 @@
-package me.legrange.mikrotik.impl;
+package me.legrange.mikrotik.impl.parsing;
 
 /**
  * A command parameter
  *
  * @author GideonLeGrange
  */
-class Parameter {
+public class Parameter {
 
     @Override
     public String toString() {

@@ -14,6 +14,10 @@ import me.legrange.mikrotik.ApiConnection;
 import me.legrange.mikrotik.ApiConnectionException;
 import me.legrange.mikrotik.MikrotikApiException;
 import me.legrange.mikrotik.ResultListener;
+import me.legrange.mikrotik.impl.exceptions.ApiDataException;
+import me.legrange.mikrotik.impl.parsing.Command;
+import me.legrange.mikrotik.impl.parsing.Parser;
+import me.legrange.mikrotik.impl.parsing.Util;
 
 /**
  * The Mikrotik API connection implementation. This is the class used to connect
@@ -44,8 +48,8 @@ public final class ApiConnectionImpl extends ApiConnection {
     private DataOutputStream out = null;
     private DataInputStream in = null;
     private boolean connected = false;
-    private Reader reader;
-    private Processor processor;
+    private ConnectionReader reader;
+    private ConnectionProcessor processor;
     private final Map<String, ResultListener> listeners;
     private final AtomicInteger _tag = new AtomicInteger(0);
     private int timeout = ApiConnection.DEFAULT_COMMAND_TIMEOUT;
@@ -151,10 +155,10 @@ public final class ApiConnectionImpl extends ApiConnection {
             in = new DataInputStream(sock.getInputStream());
             out = new DataOutputStream(sock.getOutputStream());
             connected = true;
-            reader = new Reader(this);
+            reader = new ConnectionReader(this);
             reader.setDaemon(true);
             reader.start();
-            processor = new Processor(this);
+            processor = new ConnectionProcessor(this);
             processor.setDaemon(true);
             processor.start();
         } catch (UnknownHostException ex) {
@@ -178,7 +182,7 @@ public final class ApiConnectionImpl extends ApiConnection {
         listeners.remove(tag);
     }
 
-    public Reader getReader() {
+    public ConnectionReader getReader() {
         return reader;
     }
 

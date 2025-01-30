@@ -1,22 +1,25 @@
 package me.legrange.mikrotik.impl;
 
 import me.legrange.mikrotik.ApiConnectionException;
+import me.legrange.mikrotik.impl.exceptions.ApiDataException;
+import me.legrange.mikrotik.impl.parsing.Util;
 
 import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * thread to read data from the socket and process it into Strings
  */
-class Reader extends Thread {
+class ConnectionReader extends Thread {
 
     private final ApiConnectionImpl apiConnection;
 
-    Reader(ApiConnectionImpl apiConnection) {
+    ConnectionReader(ApiConnectionImpl apiConnection) {
         super("Mikrotik API Reader");
         this.apiConnection = apiConnection;
     }
 
-    String take() throws ApiConnectionException, ApiDataException {
+    String take() throws ApiConnectionException, ApiDataException
+    {
         Object val;
         try {
             val = queue.take();

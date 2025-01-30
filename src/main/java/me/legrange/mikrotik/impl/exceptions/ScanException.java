@@ -1,4 +1,4 @@
-package me.legrange.mikrotik.impl;
+package me.legrange.mikrotik.impl.exceptions;
 
 /**
  * Exception thrown if the scanner encounters an error while scanning a command line.
@@ -6,7 +6,7 @@ package me.legrange.mikrotik.impl;
  */
 public class ScanException extends ParseException {
 
-    ScanException(String msg) {
+    public ScanException(String msg) {
         super(msg);
     }
 

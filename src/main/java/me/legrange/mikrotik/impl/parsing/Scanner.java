@@ -13,16 +13,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package me.legrange.mikrotik.impl;
+package me.legrange.mikrotik.impl.parsing;
+
+import me.legrange.mikrotik.impl.exceptions.ScanException;
 
 import java.util.Locale;
-import static me.legrange.mikrotik.impl.Scanner.Token.*;
+import static me.legrange.mikrotik.impl.parsing.Scanner.Token.*;
 /**
  * A simple scanner.
  *
  * @author gideon
  */
-class Scanner {
+public class Scanner {
 
     enum Token {
 
@@ -58,7 +60,8 @@ class Scanner {
     /**
      * return the next token from the text
      */
-    Token next() throws ScanException {
+    Token next() throws ScanException
+    {
         text = null;
         switch (c) {
             case '\n':
