@@ -12,6 +12,17 @@ import java.util.Map;
 
 class SyncListener implements ResultListener {
 
+    private ApiConnectionImpl apiConnection;
+    private List<Map<String, String>> results;
+    private MikrotikApiException err;
+    private boolean complete;
+
+    public SyncListener(ApiConnectionImpl apiConnection) {
+        this.apiConnection = apiConnection;
+        results = new LinkedList<>();
+        complete = false;
+    }
+
     @Override
     public synchronized void error(MikrotikApiException ex) {
         this.err = ex;
@@ -47,21 +58,21 @@ class SyncListener implements ResultListener {
                     long start = System.currentTimeMillis();
                     wait(waitTime);
                     waitTime = waitTime - (int) (System.currentTimeMillis() - start);
+
                     if ((waitTime <= 0) && !complete) {
                         err = new ApiConnectionException(String.format("Command timed out after %d ms", timeout));
                     }
                 }
             }
         } catch (InterruptedException ex) {
+            apiConnection.close();
             throw new ApiConnectionException(ex.getMessage(), ex);
         }
+
         if (err != null) {
             throw new MikrotikApiException(err.getMessage(), err);
         }
+
         return results;
     }
-
-    private final List<Map<String, String>> results = new LinkedList<>();
-    private MikrotikApiException err;
-    private boolean complete = false;
 }

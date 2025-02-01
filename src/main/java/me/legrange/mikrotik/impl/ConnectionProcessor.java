@@ -15,52 +15,56 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Thread to take the received strings and process it into Result objects
+ * Class that takes received strings and processes it into Result objects
  */
-class ConnectionProcessor extends Thread {
+class ConnectionProcessor {
 
-    private final ApiConnectionImpl apiConnection;
+    private ApiConnectionImpl apiConnection;
+    private List<String> lines;
+    private String line;
 
     ConnectionProcessor(ApiConnectionImpl apiConnection) {
-        super("Mikrotik API Result Processor");
         this.apiConnection = apiConnection;
+        this.lines = new LinkedList<>();
     }
 
-    @Override
-    public void run() {
-        while (apiConnection.isConnected()) {
-            ApiResponse res;
-            try {
-                res = unpack();
-            } catch (ApiCommandException ex) {
-                String tag = ex.getTag();
-                if (tag != null) {
-                    res = new ErrorResponse(tag, ex.getMessage(), ex.getCategory());
-                } else {
-                    continue;
-                }
-            } catch (MikrotikApiException ex) {
-                continue;
+    public void process() {
+        ApiResponse res;
+        try {
+            res = unpack();
+        } catch (ApiCommandException ex) {
+            String tag = ex.getTag();
+            if (tag == null) {
+                return;
             }
-            if (res.getTag() != null) {
-                ResultListener l = apiConnection.getListener(res.getTag());
-                if (l != null) {
-                    if (res instanceof ResultResponse) {
-                        l.receive((ResultResponse) res);
-                    } else if (res instanceof DoneResponse) {
-                        if (l instanceof SyncListener) {
-                            ((SyncListener) l).completed((DoneResponse) res);
-                        } else {
-                            l.completed();
-                        }
-                        apiConnection.removeListener(res.getTag());
-                    } else if (res instanceof ErrorResponse) {
-                        l.error(new ApiCommandException((ErrorResponse) res));
-                    }
-                }
+
+            res = new ErrorResponse(tag, ex.getMessage(), ex.getCategory());
+        } catch (MikrotikApiException ex) {
+            return;
+        }
+
+        if (res.getTag() == null) {
+            apiConnection.nextTag();
+            return;
+        }
+
+        ResultListener l = apiConnection.getListener(res.getTag());
+        if (l == null) {
+            return;
+        }
+
+        if (res instanceof ResultResponse) {
+            l.receive((ResultResponse) res);
+        } else if (res instanceof DoneResponse) {
+            if (l instanceof SyncListener) {
+                ((SyncListener) l).completed((DoneResponse) res);
             } else {
-                apiConnection.nextTag();
+                l.completed();
             }
+
+            apiConnection.removeListener(res.getTag());
+        } else if (res instanceof ErrorResponse) {
+            l.error(new ApiCommandException((ErrorResponse) res));
         }
     }
 
@@ -71,6 +75,7 @@ class ConnectionProcessor extends Thread {
             String[] parts = block.split("\n");
             lines.addAll(Arrays.asList(parts));
         }
+
         line = lines.remove(0);
     }
 
@@ -84,6 +89,7 @@ class ConnectionProcessor extends Thread {
             String[] parts = block.split("\n");
             lines.addAll(Arrays.asList(parts));
         }
+
         return lines.get(0);
     }
 
@@ -91,6 +97,7 @@ class ConnectionProcessor extends Thread {
         if (line == null) {
             nextLine();
         }
+
         switch (line) {
             case "!re":
                 return unpackRe();
@@ -141,6 +148,7 @@ class ConnectionProcessor extends Thread {
                 break;
             }
         }
+
         return res;
     }
 
@@ -180,6 +188,7 @@ class ConnectionProcessor extends Thread {
                         throw new ApiDataException(String.format("Malformed line '%s'", line));
                     }
                 }
+
                 if (hasNextLine()) {
                     nextLine();
                 } else {
@@ -215,9 +224,7 @@ class ConnectionProcessor extends Thread {
                 }
             }
         }
+
         return err;
     }
-
-    private final List<String> lines = new LinkedList<>();
-    private String line;
 }

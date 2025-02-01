@@ -60,7 +60,7 @@ public final class ApiConnectionImpl extends ApiConnection {
 
     @Override
     public boolean isConnected() {
-        return connected;
+        return connected; // && reader.isAlive();
     }
 
     @Override
@@ -103,18 +103,18 @@ public final class ApiConnectionImpl extends ApiConnection {
         if (timeout > 0) {
             this.timeout = timeout;
         } else {
-            throw new MikrotikApiException(String.format("Invalid timeout value '%d'; must be postive", timeout));
+            throw new MikrotikApiException(String.format("Invalid timeout value '%d'; must be positive", timeout));
         }
     }
 
     @Override
     public void close() throws ApiConnectionException {
         if (!connected) {
-            throw new ApiConnectionException(("Not/no longer connected to remote Mikrotik"));
+            throw new ApiConnectionException("Not/no longer connected to remote Mikrotik");
         }
         connected = false;
-        processor.interrupt();
         reader.interrupt();
+
         try {
             in.close();
             out.close();
@@ -124,8 +124,28 @@ public final class ApiConnectionImpl extends ApiConnection {
         }
     }
 
+    private String closeConnection() {
+        String errMsg = "";
+
+        errMsg += closeResource(out);
+        errMsg += closeResource(in);
+        errMsg += closeResource(sock);
+
+        return errMsg;
+    }
+
+    private String closeResource(Closeable c) {
+        try {
+            c.close();
+        } catch (Exception e) {
+            return String.format("Error closing : %s\n", e.getMessage());
+        }
+
+        return "";
+    }
+
     private List<Map<String, String>> execute(Command cmd, int timeout) throws MikrotikApiException {
-        SyncListener l = new SyncListener();
+        SyncListener l = new SyncListener(this);
         execute(cmd, l);
         return l.getResults(timeout);
     }
@@ -151,16 +171,19 @@ public final class ApiConnectionImpl extends ApiConnection {
         try {
             InetAddress ia = InetAddress.getByName(host.trim());
             sock = fact.createSocket();
+            sock.setSoTimeout(conTimeout);
             sock.connect(new InetSocketAddress(ia, port), conTimeout);
+
             in = new DataInputStream(sock.getInputStream());
             out = new DataOutputStream(sock.getOutputStream());
+
             connected = true;
+
+            processor = new ConnectionProcessor(this);
             reader = new ConnectionReader(this);
             reader.setDaemon(true);
             reader.start();
-            processor = new ConnectionProcessor(this);
-            processor.setDaemon(true);
-            processor.start();
+
         } catch (UnknownHostException ex) {
             connected = false;
             throw new ApiConnectionException(String.format("Unknown host '%s'", host), ex);
@@ -190,11 +213,15 @@ public final class ApiConnectionImpl extends ApiConnection {
         return in;
     }
 
-    public OutputStream getOutStream() {
+    public OutputStream getOutputStream() {
         return out;
     }
 
     public Socket getSocket() {
         return sock;
+    }
+
+    public ConnectionProcessor getProcessor() {
+        return processor;
     }
 }

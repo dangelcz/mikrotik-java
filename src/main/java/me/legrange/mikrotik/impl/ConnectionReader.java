@@ -1,36 +1,36 @@
 package me.legrange.mikrotik.impl;
 
+import com.sun.jmx.remote.internal.ArrayQueue;
 import me.legrange.mikrotik.ApiConnectionException;
 import me.legrange.mikrotik.impl.exceptions.ApiDataException;
 import me.legrange.mikrotik.impl.parsing.Util;
 
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 /**
- * thread to read data from the socket and process it into Strings
+ * Thread to read data from the socket and process it into Strings
  */
 class ConnectionReader extends Thread {
 
-    private final ApiConnectionImpl apiConnection;
+    private ApiConnectionImpl apiConnection;
+    private Queue queue;
 
     ConnectionReader(ApiConnectionImpl apiConnection) {
         super("Mikrotik API Reader");
         this.apiConnection = apiConnection;
+        this.queue = new PriorityQueue(40);
     }
 
-    String take() throws ApiConnectionException, ApiDataException
-    {
-        Object val;
-        try {
-            val = queue.take();
-        } catch (InterruptedException ex) {
-            throw new ApiConnectionException("Interrupted while reading data from queue.", ex);
-        }
+    String take() throws ApiConnectionException, ApiDataException {
+        Object val = queue.poll();
+
         if (val instanceof ApiConnectionException) {
             throw (ApiConnectionException) val;
         } else if (val instanceof ApiDataException) {
             throw (ApiDataException) val;
         }
+
         return (String) val;
     }
 
@@ -43,23 +43,35 @@ class ConnectionReader extends Thread {
         while (apiConnection.isConnected()) {
             try {
                 String s = Util.decode(apiConnection.getInputStream());
+
+                // empty response indicates that communication has been closed so end the reading
+                if (s.length() == 0) {
+                    return;
+                }
+
                 put(s);
+
+                while (!isEmpty()) {
+                    apiConnection.getProcessor().process();
+                }
+
             } catch (ApiDataException ex) {
                 put(ex);
             } catch (ApiConnectionException ex) {
-                if (apiConnection.isConnected() || !apiConnection.getSocket().isClosed()) {
-                    put(ex);
+                if (apiConnection != null && apiConnection.isConnected()) {
+                    try {
+                        put(ex);
+                        apiConnection.close();
+                    } catch (ApiConnectionException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
                 }
             }
         }
     }
 
     private void put(Object data) {
-        try {
-            queue.put(data);
-        } catch (InterruptedException ignored) {
-        }
+        queue.add(data);
     }
-
-    private final LinkedBlockingQueue queue = new LinkedBlockingQueue(40);
 }
