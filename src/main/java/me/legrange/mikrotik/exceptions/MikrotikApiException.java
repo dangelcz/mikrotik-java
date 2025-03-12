@@ -1,4 +1,4 @@
-package me.legrange.mikrotik;
+package me.legrange.mikrotik.exceptions;
 
 /**
  * Thrown by the Mikrotik API to indicate errors

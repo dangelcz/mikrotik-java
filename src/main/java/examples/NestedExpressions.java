@@ -1,6 +1,6 @@
 package examples;
 
-import me.legrange.mikrotik.MikrotikApiException;
+import me.legrange.mikrotik.exceptions.MikrotikApiException;
 
 import java.util.List;
 import java.util.Map;

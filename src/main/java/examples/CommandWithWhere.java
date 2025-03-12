@@ -2,7 +2,7 @@ package examples;
 
 import java.util.List;
 import java.util.Map;
-import me.legrange.mikrotik.MikrotikApiException;
+import me.legrange.mikrotik.exceptions.MikrotikApiException;
 
 /**
  * Example 3: Queries. Print all interfaces of a certain type. 

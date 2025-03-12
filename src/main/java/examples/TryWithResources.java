@@ -1,8 +1,8 @@
 package examples;
 
 import javax.net.SocketFactory;
-import me.legrange.mikrotik.ApiConnection;
-import me.legrange.mikrotik.MikrotikApiException;
+import me.legrange.mikrotik.connection.ApiConnection;
+import me.legrange.mikrotik.exceptions.MikrotikApiException;
 
 /**
  * Example 9: Try with resources

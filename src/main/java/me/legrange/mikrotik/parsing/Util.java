@@ -8,7 +8,7 @@ import java.nio.charset.Charset;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-import me.legrange.mikrotik.ApiConnectionException;
+import me.legrange.mikrotik.exceptions.ApiConnectionException;
 import me.legrange.mikrotik.exceptions.ApiDataException;
 
 /**

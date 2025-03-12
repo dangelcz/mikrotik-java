@@ -1,6 +1,5 @@
 package me.legrange.mikrotik.exceptions;
 
-import me.legrange.mikrotik.MikrotikApiException;
 import me.legrange.mikrotik.responses.ErrorResponse;
 
 /**

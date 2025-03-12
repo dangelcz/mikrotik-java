@@ -1,4 +1,7 @@
-package me.legrange.mikrotik;
+package me.legrange.mikrotik.connection;
+
+import me.legrange.mikrotik.exceptions.ApiConnectionException;
+import me.legrange.mikrotik.exceptions.MikrotikApiException;
 
 import java.util.List;
 import java.util.Map;
@@ -39,7 +42,7 @@ public abstract class ApiConnection implements AutoCloseable {
      * @param port The TCP port to use.
      * @param timeout The connection timeout to use when opening the connection.
      * @return The ApiConnection
-     * @throws me.legrange.mikrotik.MikrotikApiException Thrown if there is a
+     * @throws MikrotikApiException Thrown if there is a
      * problem connecting
      * @since 3.0
      */
@@ -52,7 +55,7 @@ public abstract class ApiConnection implements AutoCloseable {
      *
      * @param host The host to which to connect.
      * @return The ApiConnection
-     * @throws me.legrange.mikrotik.MikrotikApiException Thrown if there is a
+     * @throws MikrotikApiException Thrown if there is a
      * problem connecting
      */
     public static ApiConnection connect(String host) throws MikrotikApiException {
@@ -71,7 +74,7 @@ public abstract class ApiConnection implements AutoCloseable {
      *
      * @param username - username of the user on the router
      * @param password - password for the user
-     * @throws me.legrange.mikrotik.MikrotikApiException Thrown if the API encounters an error on login.
+     * @throws MikrotikApiException Thrown if the API encounters an error on login.
      */
     public abstract void login(String username, String password) throws MikrotikApiException;
 
@@ -80,7 +83,7 @@ public abstract class ApiConnection implements AutoCloseable {
      *
      * @param cmd Command to execute
      * @return The list of results
-     * @throws me.legrange.mikrotik.MikrotikApiException Thrown if the API encounters an error executing a command.
+     * @throws MikrotikApiException Thrown if the API encounters an error executing a command.
      */
     public abstract List<Map<String, String>> execute(String cmd) throws MikrotikApiException;
 
@@ -90,7 +93,7 @@ public abstract class ApiConnection implements AutoCloseable {
      * @param cmd Command to execute
      * @param lis ResultListener that will receive the results
      * @return A command object that can be used to cancel the command.
-     * @throws me.legrange.mikrotik.MikrotikApiException Thrown if the API encounters an error executing a command.
+     * @throws MikrotikApiException Thrown if the API encounters an error executing a command.
      */
     public abstract String execute(String cmd, ResultListener lis) throws MikrotikApiException;
 
@@ -98,7 +101,7 @@ public abstract class ApiConnection implements AutoCloseable {
      * cancel a command
      *
      * @param tag The tag of the command to cancel
-     * @throws me.legrange.mikrotik.MikrotikApiException Thrown if there is a
+     * @throws MikrotikApiException Thrown if there is a
      * problem cancelling the command
      */
     public abstract void cancel(String tag) throws MikrotikApiException;
@@ -120,7 +123,7 @@ public abstract class ApiConnection implements AutoCloseable {
     /**
      * Disconnect from the remote API
      *
-     * @throws me.legrange.mikrotik.ApiConnectionException Thrown if there is a
+     * @throws ApiConnectionException Thrown if there is a
      * problem closing the connection.
      * @since 2.2
      */

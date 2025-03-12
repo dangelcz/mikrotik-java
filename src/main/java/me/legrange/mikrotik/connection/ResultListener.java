@@ -1,4 +1,6 @@
-package me.legrange.mikrotik;
+package me.legrange.mikrotik.connection;
+
+import me.legrange.mikrotik.exceptions.MikrotikApiException;
 
 import java.util.Map;
 

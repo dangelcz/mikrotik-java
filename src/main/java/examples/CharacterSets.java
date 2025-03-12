@@ -1,8 +1,7 @@
 package examples;
 
-import java.util.List;
 import java.util.Map;
-import me.legrange.mikrotik.MikrotikApiException;
+import me.legrange.mikrotik.exceptions.MikrotikApiException;
 
 /**
  * Example to show that different character sets may work some times. 

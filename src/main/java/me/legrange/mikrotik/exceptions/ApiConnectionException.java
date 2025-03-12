@@ -1,4 +1,4 @@
-package me.legrange.mikrotik;
+package me.legrange.mikrotik.exceptions;
 
 /**
  * Exception thrown if the Api experiences a connection problem

@@ -17,8 +17,8 @@ package examples;
 
 import java.util.List;
 import java.util.Map;
-import me.legrange.mikrotik.ApiConnection;
-import me.legrange.mikrotik.MikrotikApiException;
+import me.legrange.mikrotik.connection.ApiConnection;
+import me.legrange.mikrotik.exceptions.MikrotikApiException;
 
 /**
  * Example: Open an Anonymous TLS connection

@@ -1,4 +1,4 @@
-package me.legrange.mikrotik;
+package me.legrange.mikrotik.connection;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -11,7 +11,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.net.SocketFactory;
 
+import me.legrange.mikrotik.exceptions.ApiConnectionException;
 import me.legrange.mikrotik.exceptions.ApiDataException;
+import me.legrange.mikrotik.exceptions.MikrotikApiException;
 import me.legrange.mikrotik.parsing.Command;
 import me.legrange.mikrotik.parsing.Parser;
 import me.legrange.mikrotik.parsing.Util;
@@ -32,7 +34,7 @@ public final class ApiConnectionImpl extends ApiConnection {
      * @param port The TCP port to use.
      * @param timeOut The connection timeout
      * @return The ApiConnection
-     * @throws me.legrange.mikrotik.ApiConnectionException Thrown if there is a
+     * @throws ApiConnectionException Thrown if there is a
      * problem connecting
      */
     public static ApiConnection connect(SocketFactory fact, String host, int port, int timeOut) throws ApiConnectionException {
@@ -61,7 +63,8 @@ public final class ApiConnectionImpl extends ApiConnection {
     }
 
     @Override
-    public void login(String username, String password) throws MikrotikApiException {
+    public void login(String username, String password) throws MikrotikApiException
+    {
         if (username.trim().isEmpty()) {
             throw new ApiConnectionException("API username cannot be empty");
         }

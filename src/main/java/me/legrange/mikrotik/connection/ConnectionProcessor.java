@@ -1,7 +1,9 @@
-package me.legrange.mikrotik;
+package me.legrange.mikrotik.connection;
 
 import me.legrange.mikrotik.exceptions.ApiCommandException;
+import me.legrange.mikrotik.exceptions.ApiConnectionException;
 import me.legrange.mikrotik.exceptions.ApiDataException;
+import me.legrange.mikrotik.exceptions.MikrotikApiException;
 import me.legrange.mikrotik.responses.ApiResponse;
 import me.legrange.mikrotik.responses.DoneResponse;
 import me.legrange.mikrotik.responses.ErrorResponse;

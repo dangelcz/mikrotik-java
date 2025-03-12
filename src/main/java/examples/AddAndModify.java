@@ -1,6 +1,6 @@
 package examples;
 
-import me.legrange.mikrotik.MikrotikApiException;
+import me.legrange.mikrotik.exceptions.MikrotikApiException;
 
 /**
  * Example 6: Create and modify object

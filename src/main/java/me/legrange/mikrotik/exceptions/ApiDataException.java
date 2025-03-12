@@ -1,7 +1,5 @@
 package me.legrange.mikrotik.exceptions;
 
-import me.legrange.mikrotik.MikrotikApiException;
-
 /**
  * Thrown if there is a problem unpacking data from the Api. 
  * @author GideonLeGrange

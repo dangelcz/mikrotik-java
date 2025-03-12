@@ -1,5 +1,6 @@
-package me.legrange.mikrotik;
+package me.legrange.mikrotik.connection;
 
+import me.legrange.mikrotik.exceptions.ApiConnectionException;
 import me.legrange.mikrotik.exceptions.ApiDataException;
 import me.legrange.mikrotik.parsing.Util;
 

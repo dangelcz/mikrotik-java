@@ -1,8 +1,8 @@
 package examples;
 
 import java.util.Map;
-import me.legrange.mikrotik.MikrotikApiException;
-import me.legrange.mikrotik.ResultListener;
+import me.legrange.mikrotik.exceptions.MikrotikApiException;
+import me.legrange.mikrotik.connection.ResultListener;
 
 /**
  * Example 5: Asynchronous results, with error and completion. Run a command and receive results, errors and completion notification for it asynchronously with a ResponseListener
