@@ -3,7 +3,6 @@ package me.legrange.mikrotik;
 import java.util.List;
 import java.util.Map;
 import javax.net.SocketFactory;
-import me.legrange.mikrotik.impl.ApiConnectionImpl;
 
 /**
  * The Mikrotik API connection. This is the class used to connect to a remote

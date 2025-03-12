@@ -1,7 +1,7 @@
-package me.legrange.mikrotik.impl.exceptions;
+package me.legrange.mikrotik.exceptions;
 
 import me.legrange.mikrotik.MikrotikApiException;
-import me.legrange.mikrotik.impl.responses.ErrorResponse;
+import me.legrange.mikrotik.responses.ErrorResponse;
 
 /**
  * Thrown when the Mikrotik returns an error when receiving our command.

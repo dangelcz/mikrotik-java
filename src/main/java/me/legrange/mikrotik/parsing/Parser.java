@@ -1,12 +1,12 @@
-package me.legrange.mikrotik.impl.parsing;
+package me.legrange.mikrotik.parsing;
 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-import me.legrange.mikrotik.impl.exceptions.ParseException;
-import me.legrange.mikrotik.impl.parsing.Scanner.Token;
-import me.legrange.mikrotik.impl.exceptions.ScanException;
+import me.legrange.mikrotik.exceptions.ParseException;
+import me.legrange.mikrotik.parsing.Scanner.Token;
+import me.legrange.mikrotik.exceptions.ScanException;
 
 /**
  * Parse the pseudo-command line into command objects.

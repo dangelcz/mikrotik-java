@@ -13,12 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package me.legrange.mikrotik.impl.parsing;
+package me.legrange.mikrotik.parsing;
 
-import me.legrange.mikrotik.impl.exceptions.ScanException;
+import me.legrange.mikrotik.exceptions.ScanException;
 
 import java.util.Locale;
-import static me.legrange.mikrotik.impl.parsing.Scanner.Token.*;
+import static me.legrange.mikrotik.parsing.Scanner.Token.*;
 /**
  * A simple scanner.
  *

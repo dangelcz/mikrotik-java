@@ -1,10 +1,7 @@
-package me.legrange.mikrotik.impl;
+package me.legrange.mikrotik;
 
-import me.legrange.mikrotik.ApiConnectionException;
-import me.legrange.mikrotik.MikrotikApiException;
-import me.legrange.mikrotik.ResultListener;
-import me.legrange.mikrotik.impl.responses.DoneResponse;
-import me.legrange.mikrotik.impl.responses.ResultResponse;
+import me.legrange.mikrotik.responses.DoneResponse;
+import me.legrange.mikrotik.responses.ResultResponse;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package me.legrange.mikrotik.impl.parsing;
+package me.legrange.mikrotik.parsing;
 
 import java.util.Arrays;
 import java.util.LinkedList;

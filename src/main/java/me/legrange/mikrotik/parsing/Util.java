@@ -1,4 +1,4 @@
-package me.legrange.mikrotik.impl.parsing;
+package me.legrange.mikrotik.parsing;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,7 +9,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import me.legrange.mikrotik.ApiConnectionException;
-import me.legrange.mikrotik.impl.exceptions.ApiDataException;
+import me.legrange.mikrotik.exceptions.ApiDataException;
 
 /**
  * Utility library that handles the low level encoding required by the Mikrotik

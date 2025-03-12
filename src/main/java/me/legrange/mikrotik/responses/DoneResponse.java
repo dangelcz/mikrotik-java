@@ -1,4 +1,4 @@
-package me.legrange.mikrotik.impl.responses;
+package me.legrange.mikrotik.responses;
 
 /**
  * Internal representation of !done

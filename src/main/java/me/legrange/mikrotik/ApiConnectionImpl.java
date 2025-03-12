@@ -1,4 +1,4 @@
-package me.legrange.mikrotik.impl;
+package me.legrange.mikrotik;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -10,14 +10,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.net.SocketFactory;
-import me.legrange.mikrotik.ApiConnection;
-import me.legrange.mikrotik.ApiConnectionException;
-import me.legrange.mikrotik.MikrotikApiException;
-import me.legrange.mikrotik.ResultListener;
-import me.legrange.mikrotik.impl.exceptions.ApiDataException;
-import me.legrange.mikrotik.impl.parsing.Command;
-import me.legrange.mikrotik.impl.parsing.Parser;
-import me.legrange.mikrotik.impl.parsing.Util;
+
+import me.legrange.mikrotik.exceptions.ApiDataException;
+import me.legrange.mikrotik.parsing.Command;
+import me.legrange.mikrotik.parsing.Parser;
+import me.legrange.mikrotik.parsing.Util;
 
 /**
  * The Mikrotik API connection implementation. This is the class used to connect

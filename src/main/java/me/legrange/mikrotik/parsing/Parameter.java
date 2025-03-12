@@ -1,4 +1,4 @@
-package me.legrange.mikrotik.impl.parsing;
+package me.legrange.mikrotik.parsing;
 
 /**
  * A command parameter

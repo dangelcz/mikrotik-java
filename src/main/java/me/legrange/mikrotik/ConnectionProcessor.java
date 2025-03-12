@@ -1,14 +1,11 @@
-package me.legrange.mikrotik.impl;
+package me.legrange.mikrotik;
 
-import me.legrange.mikrotik.ApiConnectionException;
-import me.legrange.mikrotik.MikrotikApiException;
-import me.legrange.mikrotik.ResultListener;
-import me.legrange.mikrotik.impl.exceptions.ApiCommandException;
-import me.legrange.mikrotik.impl.exceptions.ApiDataException;
-import me.legrange.mikrotik.impl.responses.ApiResponse;
-import me.legrange.mikrotik.impl.responses.DoneResponse;
-import me.legrange.mikrotik.impl.responses.ErrorResponse;
-import me.legrange.mikrotik.impl.responses.ResultResponse;
+import me.legrange.mikrotik.exceptions.ApiCommandException;
+import me.legrange.mikrotik.exceptions.ApiDataException;
+import me.legrange.mikrotik.responses.ApiResponse;
+import me.legrange.mikrotik.responses.DoneResponse;
+import me.legrange.mikrotik.responses.ErrorResponse;
+import me.legrange.mikrotik.responses.ResultResponse;
 
 import java.util.Arrays;
 import java.util.LinkedList;

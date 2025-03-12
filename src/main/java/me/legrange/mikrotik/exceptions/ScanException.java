@@ -1,4 +1,4 @@
-package me.legrange.mikrotik.impl.exceptions;
+package me.legrange.mikrotik.exceptions;
 
 /**
  * Exception thrown if the scanner encounters an error while scanning a command line.

@@ -1,9 +1,7 @@
-package me.legrange.mikrotik.impl;
+package me.legrange.mikrotik;
 
-import com.sun.jmx.remote.internal.ArrayQueue;
-import me.legrange.mikrotik.ApiConnectionException;
-import me.legrange.mikrotik.impl.exceptions.ApiDataException;
-import me.legrange.mikrotik.impl.parsing.Util;
+import me.legrange.mikrotik.exceptions.ApiDataException;
+import me.legrange.mikrotik.parsing.Util;
 
 import java.util.PriorityQueue;
 import java.util.Queue;

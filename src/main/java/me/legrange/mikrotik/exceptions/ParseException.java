@@ -1,4 +1,4 @@
-package me.legrange.mikrotik.impl.exceptions;
+package me.legrange.mikrotik.exceptions;
 
 import me.legrange.mikrotik.MikrotikApiException;
 
