@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.security.Security;
 import java.util.LinkedList;
 import java.util.List;
 import javax.net.SocketFactory;
@@ -71,9 +72,18 @@ public class AnonymousSocketFactory extends SocketFactory {
     }
 
     public static SocketFactory getDefault() {
-        if (fact == null) {
+        if (fact == null)
+        {
+            // enable anonymous TLS
+            // it is defined in conf\security\java.security as jdk.tls.disabledAlgorithms key
+            // so we remove it from there
+            String disabledAlgorithms = Security.getProperty("jdk.tls.disabledAlgorithms");
+            disabledAlgorithms = disabledAlgorithms.replace("anon", "");
+            Security.setProperty("jdk.tls.disabledAlgorithms", disabledAlgorithms);
+
             fact = new AnonymousSocketFactory();
         }
+
         return fact;
     }
 
